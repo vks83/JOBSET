@@ -1,29 +1,25 @@
-name: Compilation du Mod Bonelab
+<Project Sdk="Microsoft.NET.Sdk">
 
-on:
-  push:
-    branches: [ main ]
-  workflow_dispatch:
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+  </PropertyGroup>
 
-jobs:
-  build:
-    runs-on: windows-latest
+  <ItemGroup>
+    <Reference Include="MelonLoader">
+      <HintPath>$(ProjectDir)MelonLoader.dll</HintPath>
+    </Reference>
+    <Reference Include="BoneLib">
+      <HintPath>$(ProjectDir)BoneLib.dll</HintPath>
+    </Reference>
+    <Reference Include="LabFusion">
+      <HintPath>$(ProjectDir)LabFusion.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.CoreModule">
+      <HintPath>$(ProjectDir)UnityEngine.CoreModule.dll</HintPath>
+    </Reference>
+  </ItemGroup>
 
-    steps:
-    - name: Récupérer le code
-      uses: actions/checkout@v4
-
-    - name: Configurer MSBuild (Outil de compilation)
-      uses: microsoft/setup-msbuild@v2
-
-    - name: Restaurer les dépendances du projet
-      run: dotnet restore ModRoles.csproj
-
-    - name: Compiler le projet avec MSBuild
-      run: msbuild ModRoles.csproj /p:Configuration=Release
-
-    - name: Sauvegarder le fichier DLL généré
-      uses: actions/upload-artifact@v4
-      with:
-        name: Mod-Roles-Bonelab
-        path: bin/Release/ModRoles.dll
+</Project>

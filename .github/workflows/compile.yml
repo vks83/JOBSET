@@ -1,0 +1,29 @@
+name: Compilation du Mod Bonelab
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+    - name: Récupérer le code
+      uses: actions/checkout@v4
+
+    - name: Configurer MSBuild (Outil de compilation)
+      uses: microsoft/setup-msbuild@v2
+
+    - name: Restaurer les dépendances du projet
+      run: dotnet restore ModRoles.csproj
+
+    - name: Compiler le projet avec MSBuild
+      run: msbuild ModRoles.csproj /p:Configuration=Release
+
+    - name: Sauvegarder le fichier DLL généré
+      uses: actions/upload-artifact@v4
+      with:
+        name: Mod-Roles-Bonelab
+        path: bin/Release/ModRoles.dll
